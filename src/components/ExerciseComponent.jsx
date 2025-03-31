@@ -14,7 +14,7 @@ const ExerciseComponent = () => {
       setItem("");
       setErrors("");
     } else {
-      setErrors("Exercise item cannot be empty.");
+      setErrors("Error: Empty fields.");
       inputRef.current.focus();
     }
   };
@@ -40,19 +40,19 @@ const ExerciseComponent = () => {
   };
 
   return (
-    <div className="exercise-buddy">
-      <h1>Exercise Buddy</h1>
+    <div className="workout-list">
+      <h1>Workout List</h1>
       <div className="input-section">
         <div className="input-container">
           <input
             ref={inputRef}
             type="text"
-            placeholder="Enter an item..."
+            placeholder="Search"
             value={item}
             onChange={(event) => setItem(event.target.value)}
           />
           <button onClick={handleAddItem} className="btn-add">
-            Add Item
+            Add Exercise
           </button>
         </div>
         <div>{errors ? <p className="errors">{errors}</p> : null}</div>
@@ -69,7 +69,7 @@ const ExerciseComponent = () => {
       </ul>
       {exerciseItems.length > 0 ? (
         <button onClick={handleClearItems} className="btn-clear">
-          Clear Exercise Items{" "}
+          Clear List{" "}
         </button>
       ) : null}
     </div>
