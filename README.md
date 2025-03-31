@@ -1,3 +1,12 @@
+# Deployed At
+https://fierensk.github.io/exercise-app/
+
+# some commands to setup
+
+npm install
+npm install uuid
+npm run dev
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
