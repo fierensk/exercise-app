@@ -7,3 +7,7 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>,
 )
+
+fetch('/api')
+  .then((res) => res.json())
+  .then((data) => console.log(data["message"]));
