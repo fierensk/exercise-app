@@ -1,11 +1,19 @@
 # Deployed At
 https://fierensk.github.io/exercise-app/
 
-# some commands to setup
+# Some commands to setup
+## To Setup Environment
+`npm install`
+`npm install uuid`
 
-npm install
-npm install uuid
-npm run dev
+## To Run Server and Website Locally
+### Terminal 1
+`node server/app.js`
+### Terminal 2
+`npm run build`
+`npm run preview` (or `npm run dev`)
+
+### Use Control C to stop server or website
 
 # React + Vite
 
@@ -19,9 +27,3 @@ Currently, two official plugins are available:
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-
-# some commands to setup
-
-npm install
-npm install uuid
-npm run dev
