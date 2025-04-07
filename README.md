@@ -3,14 +3,13 @@ https://fierensk.github.io/exercise-app/
 
 # Some commands to setup
 ## To Setup Environment
-`npm install`
-`npm install uuid`
+`npm install` (Adds node_modules file locally with dependencies in package.json)
 
 ## To Run Server and Website Locally
 ### Terminal 1
 `node server/app.js`
 ### Terminal 2
-`npm run build`
+`npm run build`\
 `npm run preview` (or `npm run dev`)
 
 ### Use Control C to stop server or website
