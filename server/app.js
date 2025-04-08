@@ -6,20 +6,10 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-// const db = require('./db');
 const port = 3000;
 
 app.use(cors({origin: '*'}));
 app.use(bodyParser.json());
-
-// app.post('/getTable', async (req, res) => {
-//     const { TableName } = req.body;
-//     const sql = `SELECT * FROM ${TableName}`;
-//     db.get(sql, (err, row) => {
-//         if (err) return res.json({err});
-//         res.json(row);
-//     });
-// });
 
 app.get('/api', (req, res) => {
     res.json({message: 'Hello from NodeJS!'});
@@ -27,4 +17,21 @@ app.get('/api', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
-})
+});
+
+// Requires actual database to pull from (either file or reading json file)
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+    debug: true,
+    host: 'localhost',
+    user: 'root',
+    password: 'password'
+});
+connection.connect((err) => {
+    if (err) {
+        console.log(err);
+        console.log('Try creating a real one first!');
+        return;
+    }
+    console.log('Database connection created!');
+});
