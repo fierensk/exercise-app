@@ -3,7 +3,7 @@ https://fierensk.github.io/exercise-app/
 
 # Some commands to setup
 ## To Setup Environment
-`npm install` (Adds node_modules file locally with dependencies in package.json)
+`npm install` (Adds node_modules file locally with dependencies in package.json)  
 _When working with a previously setup environment, delete package-lock.json file and node_modules folder before running npm install._
 
 ## To Run Server and Website Locally
