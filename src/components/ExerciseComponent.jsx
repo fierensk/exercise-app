@@ -7,6 +7,7 @@ const ExerciseComponent = () => {
   const [item, setItem] = useState("");
   const [exerciseItems, setExerciseItems] = useState([]);
   const [errors, setErrors] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleAddItem = () => {
     if (item) {
@@ -24,7 +25,6 @@ const ExerciseComponent = () => {
       if (item.id === id) {
         return { ...item, name: newItem };
       }
-
       return item;
     });
     setExerciseItems(updatedExerciseItems);
@@ -42,12 +42,24 @@ const ExerciseComponent = () => {
   return (
     <div className="workout-list">
       <h1>Workout List</h1>
+
+      
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search exercises..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      
       <div className="input-section">
         <div className="input-container">
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search"
+            placeholder="Add exercise"
             value={item}
             onChange={(event) => setItem(event.target.value)}
           />
@@ -55,23 +67,31 @@ const ExerciseComponent = () => {
             Add Exercise
           </button>
         </div>
-        <div>{errors ? <p className="errors">{errors}</p> : null}</div>
+        {errors && <p className="errors">{errors}</p>}
       </div>
+
+      
       <ul className="exercise-list">
-        {exerciseItems.map((item) => (
-          <ExerciseItemComponent
-            key={item.id}
-            item={item}
-            handleEditItem={handleEditItem}
-            handleDeleteItem={handleDeleteItem}
-          />
-        ))}
+        {exerciseItems
+          .filter((item) =>
+            item.name.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          .map((item) => (
+            <ExerciseItemComponent
+              key={item.id}
+              item={item}
+              handleEditItem={handleEditItem}
+              handleDeleteItem={handleDeleteItem}
+            />
+          ))}
       </ul>
-      {exerciseItems.length > 0 ? (
+
+    
+      {exerciseItems.length > 0 && (
         <button onClick={handleClearItems} className="btn-clear">
-          Clear List{" "}
+          Clear List
         </button>
-      ) : null}
+      )}
     </div>
   );
 };
