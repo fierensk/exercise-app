@@ -7,3 +7,11 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>,
 )
+
+// Communicates with backend to output message and all data queried from database
+fetch('/api')
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data["message"]);
+    data["data"].forEach(row => console.log(row));
+  });
