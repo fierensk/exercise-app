@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 
+/*
+  main list component, handles input of exercises, editing and deleting items, searching, validation/ui
+*/ 
+
 const ExerciseItemComponent = ({ item, handleEditItem, handleDeleteItem }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newItem, setNewItem] = useState(item.name);

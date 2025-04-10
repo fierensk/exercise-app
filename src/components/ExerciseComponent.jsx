@@ -1,33 +1,48 @@
-import React, { useRef, useState } from "react";
-import { v4 as uuid } from "uuid";
+import React, { useRef, useState, useEffect } from "react";
 import ExerciseItemComponent from "./ExerciseItemComponent";
 
 const ExerciseComponent = () => {
   const inputRef = useRef();
-  const [item, setItem] = useState("");
-  const [exerciseItems, setExerciseItems] = useState([]);
-  const [errors, setErrors] = useState("");
+  const [exerciseItems, setExerciseItems] = useState([]); // Selected task list
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]); // Dropdown results
+  const [errors, setErrors] = useState("");
 
-  const handleAddItem = () => {
-    if (item) {
-      setExerciseItems([...exerciseItems, { id: uuid(), name: item }]);
-      setItem("");
-      setErrors("");
-    } else {
-      setErrors("Error: Empty fields.");
-      inputRef.current.focus();
+  // Fetch matching exercises from DB
+  useEffect(() => {
+    const fetchExercises = async () => {
+      if (!searchTerm) {
+        setSearchResults([]);
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api?search=${encodeURIComponent(searchTerm)}`);
+        const data = await res.json();
+        setSearchResults(data.data);
+      } catch (err) {
+        console.error("Failed to fetch exercises:", err);
+      }
+    };
+
+    fetchExercises();
+  }, [searchTerm]);
+
+  const handleSelectSearchItem = (item) => {
+    // Prevent duplicates
+    if (!exerciseItems.find((ex) => ex.id === item.id)) {
+      setExerciseItems([...exerciseItems, item]);
     }
+
+    setSearchTerm("");
+    setSearchResults([]);
   };
 
   const handleEditItem = (id, newItem) => {
-    const updatedExerciseItems = exerciseItems.map((item) => {
-      if (item.id === id) {
-        return { ...item, name: newItem };
-      }
-      return item;
-    });
-    setExerciseItems(updatedExerciseItems);
+    const updatedItems = exerciseItems.map((item) =>
+      item.id === id ? { ...item, name: newItem } : item
+    );
+    setExerciseItems(updatedItems);
   };
 
   const handleDeleteItem = (removeId) => {
@@ -43,7 +58,6 @@ const ExerciseComponent = () => {
     <div className="workout-list">
       <h1>Workout List</h1>
 
-      
       <div className="search-container">
         <input
           type="text"
@@ -51,42 +65,28 @@ const ExerciseComponent = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        {searchResults.length > 0 && (
+          <ul className="search-dropdown">
+            {searchResults.map((item) => (
+              <li key={item.id} onClick={() => handleSelectSearchItem(item)}>
+                {item.name} ({item.primaryMuscles})
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
-      
-      <div className="input-section">
-        <div className="input-container">
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder="Add exercise"
-            value={item}
-            onChange={(event) => setItem(event.target.value)}
-          />
-          <button onClick={handleAddItem} className="btn-add">
-            Add Exercise
-          </button>
-        </div>
-        {errors && <p className="errors">{errors}</p>}
-      </div>
-
-      
       <ul className="exercise-list">
-        {exerciseItems
-          .filter((item) =>
-            item.name.toLowerCase().includes(searchTerm.toLowerCase())
-          )
-          .map((item) => (
-            <ExerciseItemComponent
-              key={item.id}
-              item={item}
-              handleEditItem={handleEditItem}
-              handleDeleteItem={handleDeleteItem}
-            />
-          ))}
+        {exerciseItems.map((item) => (
+          <ExerciseItemComponent
+            key={item.id}
+            item={item}
+            handleEditItem={handleEditItem}
+            handleDeleteItem={handleDeleteItem}
+          />
+        ))}
       </ul>
 
-    
       {exerciseItems.length > 0 && (
         <button onClick={handleClearItems} className="btn-clear">
           Clear List
