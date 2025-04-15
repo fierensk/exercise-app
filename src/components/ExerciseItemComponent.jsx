@@ -10,6 +10,14 @@ const ExerciseItemComponent = ({ item, handleEditItem, handleDeleteItem }) => {
   const [reps, setReps] = useState(item.reps || 10);
   const [errors, setErrors] = useState("");
 
+  const formatPrimaryMuscles = (muscles) => {
+    if (!muscles) return '';
+    // Remove brackets and quotes, and split into array
+    const cleanMuscles = muscles.replace(/[\[\]"]/g, '');
+    // Split by comma and trim each muscle
+    return cleanMuscles.split(',').map(muscle => muscle.trim()).join(', ');
+  };
+
   const onEdit = () => {
     if (sets > 0 && reps > 0) {
       handleEditItem(item.id, { ...item, sets: parseInt(sets), reps: parseInt(reps) });
@@ -26,7 +34,7 @@ const ExerciseItemComponent = ({ item, handleEditItem, handleDeleteItem }) => {
         <div className="exercise-info">
           <h3>{item.name}</h3>
           <p>Equipment: {item.equipment}</p>
-          <p>Primary Muscles: {item.primaryMuscles}</p>
+          <p>Primary Muscles: {formatPrimaryMuscles(item.primaryMuscles)}</p>
           {isEditing ? (
             <div className="sets-reps-input">
               <div>
