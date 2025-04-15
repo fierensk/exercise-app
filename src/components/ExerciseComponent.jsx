@@ -29,18 +29,22 @@ const ExerciseComponent = () => {
   }, [searchTerm]);
 
   const handleSelectSearchItem = (item) => {
-    // Prevent duplicates
     if (!exerciseItems.find((ex) => ex.id === item.id)) {
-      setExerciseItems([...exerciseItems, item]);
+      // Add default sets and reps to the selected item
+      const newItem = {
+        ...item,
+        sets: 3,
+        reps: 10
+      };
+      setExerciseItems([...exerciseItems, newItem]);
     }
-
     setSearchTerm("");
     setSearchResults([]);
   };
 
-  const handleEditItem = (id, newItem) => {
+  const handleEditItem = (id, updatedItem) => {
     const updatedItems = exerciseItems.map((item) =>
-      item.id === id ? { ...item, name: newItem } : item
+      item.id === id ? updatedItem : item
     );
     setExerciseItems(updatedItems);
   };
