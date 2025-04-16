@@ -9,6 +9,7 @@ const ExerciseItemComponent = ({ item, handleEditItem, handleDeleteItem }) => {
   const [sets, setSets] = useState(item.sets || 3);
   const [reps, setReps] = useState(item.reps || 10);
   const [errors, setErrors] = useState("");
+  const [showImages, setShowImages] = useState(false); // NEW
 
   const formatPrimaryMuscles = (muscles) => {
     if (!muscles) return '';
@@ -27,6 +28,8 @@ const ExerciseItemComponent = ({ item, handleEditItem, handleDeleteItem }) => {
       setErrors("Sets and reps must be greater than 0.");
     }
   };
+
+  const imagesArray = item.images ? JSON.parse(item.images) : [];
 
   return (
     <>
@@ -59,8 +62,26 @@ const ExerciseItemComponent = ({ item, handleEditItem, handleDeleteItem }) => {
           ) : (
             <p>Sets: {sets} | Reps: {reps}</p>
           )}
-        </div>
+          <button
+            onClick={() => setShowImages(!showImages)}
+            className="btn-toggle-images"
+          >
+            {showImages ? "Hide Images" : "Show Images"}
+          </button>
 
+          {showImages && (
+            <div className="exercise-images">
+              {imagesArray.map((image, index) => (
+                <img
+                  key={index}
+                  src={`/exercise-app/assets/${image}`}
+                  className="exercise-thumbnail"
+                  alt={`exercise-thumbnail-${index}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
         <div className="exercise-actions">
           <button
             onClick={() => {

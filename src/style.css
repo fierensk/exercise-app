@@ -183,3 +183,16 @@
   margin-top: 5px;
   font-size: 14px;
 }
+
+/*image config*/
+.exercise-images {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 10px; 
+}
+
+.exercise-thumbnail {
+  width: 200px;
+  height: auto;
+  display: block;
+}
