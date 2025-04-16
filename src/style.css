@@ -1,11 +1,26 @@
+/* CONTAINER */
 .workout-list {
   text-align: center;
   margin-top: 2rem;
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
 }
 
+.workout-list h1 {
+  font-size: 2.5rem;
+  color: #b30000;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+
+/* SEARCH BAR */
 .search-container {
   display: flex;
   justify-content: center;
@@ -17,6 +32,14 @@
   padding: 10px;
   width: 100%;
   font-size: 16px;
+  border: 2px solid #bbb;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.search-container input:focus {
+  border-color: #b30000;
 }
 
 .search-dropdown {
@@ -32,6 +55,7 @@
   left: 0;
   right: 0;
   z-index: 10;
+  border-radius: 4px;
 }
 
 .search-dropdown li {
@@ -44,34 +68,45 @@
   background-color: #f5f5f5;
 }
 
+/* EXERCISE LIST */
 .exercise-list {
   list-style: none;
   padding: 0;
 }
 
 .exercise-item {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  background: #f7f7f7;
+  border: 1px solid #ccc;
+  border-left: 5px solid #b30000;
+  border-radius: 8px;
   padding: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  transition: box-shadow 0.3s ease;
+}
+
+.exercise-item:hover {
+  box-shadow: 0 0 10px rgba(179, 0, 0, 0.15);
 }
 
 .exercise-info {
   flex: 1;
+  text-align: left;
 }
 
 .exercise-info h3 {
   margin: 0 0 10px 0;
+  color: #b30000;
 }
 
 .exercise-info p {
   margin: 5px 0;
+  color: #444;
 }
 
+/* INPUT FIELDS FOR SETS/REPS */
 .sets-reps-input {
   display: flex;
   gap: 20px;
@@ -87,11 +122,16 @@
 .sets-reps-input input {
   width: 60px;
   padding: 5px;
+  font-size: 14px;
+  border: 2px solid #aaa;
+  border-radius: 4px;
 }
 
+/* ACTION BUTTONS */
 .exercise-actions {
   display: flex;
   gap: 10px;
+  flex-direction: column;
 }
 
 .btn-edit,
@@ -99,29 +139,47 @@
 .btn-clear {
   padding: 8px 16px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 0.95rem;
+  transition: background-color 0.3s ease;
 }
 
+/* Edit = gray */
 .btn-edit {
-  background-color: #4CAF50;
+  background-color: #555;
   color: white;
 }
 
+.btn-edit:hover {
+  background-color: #333;
+}
+
+/* Delete = red */
 .btn-delete {
-  background-color: #f44336;
+  background-color: #b30000;
   color: white;
 }
 
+.btn-delete:hover {
+  background-color: #8b0000;
+}
+
+/* Clear List Button = dark gray */
 .btn-clear {
-  background-color: #2196F3;
+  background-color: #333;
   color: white;
   margin-top: 20px;
 }
 
+.btn-clear:hover {
+  background-color: #111;
+}
+
+/* ERROR MESSAGES */
 .errors {
-  color: #f44336;
+  color: #b30000;
   margin-top: 5px;
   font-size: 14px;
 }
