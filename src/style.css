@@ -1,20 +1,193 @@
+/* BASE */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f3f3f3;
+}
+
+/* CONTAINER */
 .workout-list {
-    text-align: center;
-    margin-top: 2rem;
-  }
-  
-  .search-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  .search-container input {
-    padding: 0.6em;
-    width: 60%;
-    max-width: 400px;
-    font-size: 1em;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-  }
-  
+  text-align: center;
+  margin: 3rem auto;
+  max-width: 600px;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(100, 100, 100, 0.15);
+  border: 1px solid #ddd;
+}
+
+/* HEADER */
+.workout-list h1 {
+  font-size: 2.5rem;
+  color: #b30000;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* SEARCH */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.search-container input {
+  padding: 0.8em;
+  width: 80%;
+  max-width: 400px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 2px solid #999;
+  transition: border-color 0.3s ease;
+}
+
+.search-container input:focus {
+  border-color: #b30000;
+  outline: none;
+}
+
+/* INPUT SECTION */
+.input-section {
+  margin-bottom: 1.5rem;
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.input-container input {
+  padding: 0.8em;
+  width: 60%;
+  max-width: 300px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 2px solid #999;
+}
+
+.input-container input:focus {
+  border-color: #ff4d4d;
+  outline: none;
+}
+
+.btn-add {
+  padding: 0.8em 1.4em;
+  background-color: #b30000;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-add:hover {
+  background-color: #990000;
+}
+
+.errors {
+  color: #cc0000;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+/* EXERCISE LIST */
+.exercise-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 2rem;
+}
+
+.exercise-list li {
+  background-color: #eeeeee;
+  padding: 1rem 1.2rem;
+  margin-bottom: 0.8rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  border-left: 5px solid #b30000;
+}
+
+/* ITEM BUTTONS */
+.exercise-list button {
+  padding: 0.4rem 0.9rem;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.exercise-list .btn-edit {
+  background-color: #555;
+  color: white;
+}
+
+.exercise-list .btn-edit:hover {
+  background-color: #333;
+}
+
+.exercise-list .btn-delete {
+  background-color: #b30000;
+  color: white;
+}
+
+.exercise-list .btn-delete:hover {
+  background-color: #8b0000;
+}
+
+/* CLEAR BUTTON */
+.btn-clear {
+  margin-top: 1.5rem;
+  background-color: #333;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-clear:hover {
+  background-color: #111;
+}
+
+/* Style for Edit/Delete buttons in the exercise list */
+.exercise-list button {
+  padding: 0.4rem 0.9rem;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+/* Edit Button */
+.exercise-list .btn-edit {
+  background-color: #555;
+  color: white;
+}
+
+.exercise-list .btn-edit:hover {
+  background-color: #333;
+}
+
+/* Delete Button */
+.exercise-list .btn-delete {
+  background-color: #b30000;
+  color: white;
+}
+
+.exercise-list .btn-delete:hover {
+  background-color: #8b0000;
+}
