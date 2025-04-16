@@ -30,7 +30,6 @@ const ExerciseComponent = () => {
 
   const handleSelectSearchItem = (item) => {
     if (!exerciseItems.find((ex) => ex.id === item.id)) {
-      // Add default sets and reps to the selected item
       const newItem = {
         ...item,
         sets: 3,
@@ -73,7 +72,10 @@ const ExerciseComponent = () => {
           <ul className="search-dropdown">
             {searchResults.map((item) => (
               <li key={item.id} onClick={() => handleSelectSearchItem(item)}>
-                {item.name} ({item.primaryMuscles})
+                <strong>{item.name}</strong>{" "}
+                <span style={{ color: "#666", fontSize: "0.9rem" }}>
+                  ({item.primaryMuscles?.replace(/[\[\]"]/g, "")})
+                </span>
               </li>
             ))}
           </ul>
