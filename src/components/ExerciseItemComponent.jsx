@@ -6,8 +6,8 @@ const ExerciseItemComponent = ({ item, handleEditItem, handleDeleteItem }) => {
   const [errors, setErrors] = useState("");
 
   const onEdit = () => {
-    if (newItem) {
-      handleEditItem(item.id, newItem);
+    if (newItem.trim()) {
+      handleEditItem(item.id, newItem.trim());
       setIsEditing(false);
       setErrors("");
     } else {
@@ -21,6 +21,7 @@ const ExerciseItemComponent = ({ item, handleEditItem, handleDeleteItem }) => {
         {isEditing ? (
           <input
             type="text"
+            className="edit-input"
             value={newItem}
             onChange={(event) => setNewItem(event.target.value)}
           />
