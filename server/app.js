@@ -52,26 +52,40 @@ app.get('/api', (req, res) => {
 
 // Queries database to insert new list
 app.post('/addList', (req, res) => {
-    console.log('Adding list to database');
+    // Only adds data if list contains at least one object
     if (req.body["data"].length > 0) {
-        let listIds = '';
+        let listIds = ''; // String of array objects containing ids
         for (let i = 0; i < req.body["data"].length; i++) {
+            // TODO: Find storage for reps and other stuff
             listIds += `["${req.body["data"][`${i}`]["id"]}"],`;
         }
 
+        // Inserts object into database to create a list item
         db.run(`INSERT INTO lists(exercise_ids) VALUES('${listIds.substring(0, listIds.length-1)}');`, err => {
+            // Returns an error message and message indicating being unable to update
             if (err) {
                 console.log(err);
-                res.status(500).json({ message: "Unable to insert list into database "});
+                res.status(500).json({ message: "Unable to insert list into database."});
                 return;
             }
         });
     }
 
+    // Returns a message indicating database insert was a success
     res.json({ message: "Data loaded successfully" });
 });
 
-// Retrieves list values
+// Retrieves list values for list view page
 app.get('/getLists', (req, res) => {
-    console.log('Retrieving stored lists');
+    db.all('SELECT * FROM lists ORDER by id;', (err, rows) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ message: "Unable to retrieve data at this time." });
+            return;
+        }
+        console.log(rows);
+
+        // Returns a message indicating successful send of data
+        res.json({ message: "Data loaded successfully", data: rows });
+    });
 });

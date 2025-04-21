@@ -73,15 +73,13 @@ const ExerciseComponent = () => {
   };
 
   const handleAddItems = () => {
-    console.log('Added Items');
-
     fetch('http://localhost:3000/addList', {
       method: 'POST',
       headers: {
         'Content-Type' : 'application/json'
       },
       body: JSON.stringify({ data: exerciseItems })
-    }).then((response) => console.log(response.json()));
+    });
   };
 
   const handleViewItem = () => {
