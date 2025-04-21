@@ -4,6 +4,10 @@ import ExerciseComponent from "./components/ExerciseComponent.jsx";
 import ViewListComponent from "./components/ViewListComponent.jsx";
 import "./style.css";
 
+/*
+acts as the root component and just renders exercisecomponent
+*/
+
 function App() {
   return (
     <Router>

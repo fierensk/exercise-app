@@ -30,14 +30,23 @@ const db = new sqlite3.Database('server/exercises.db', (err) => {
     }
 });
 
-// Uses middleware to connect to frontend and sends welcome message and database rows via Express body's json
+//dynamically returns queries based on whats searched 
 app.get('/api', (req, res) => {
-    db.all('SELECT * FROM schema ORDER BY id', (err, rows) => {
+    const search = req.query.search || "";
+    const query = `
+        SELECT * FROM schema
+        WHERE name LIKE ?
+        ORDER BY id
+    `;
+    const searchTerm = `%${search}%`;
+
+    db.all(query, [searchTerm], (err, rows) => {
         if (err) {
             console.log(err);
+            res.status(500).json({ message: "There's some database problem" });
             return;
         }
-        res.json({message: 'Hello from NodeJS! Below are all of the database objects:', data: rows});
+        res.json({ message: "Filtered results from db", data: rows });
     });
 });
 

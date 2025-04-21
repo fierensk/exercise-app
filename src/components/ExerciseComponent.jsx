@@ -10,26 +10,57 @@ const ExerciseComponent = () => {
   const [searchResults, setSearchResults] = useState([]); // Dropdown results
   const [errors, setErrors] = useState("");
 
-  const handleAddItem = () => {
-    if (item) {
-      setExerciseItems([...exerciseItems, { id: uuid(), name: item }]);
-      setItem("");
-      setErrors("");
-    } else {
-      setErrors("Error: Empty fields.");
-      inputRef.current.focus();
-    }
-  };
+  const workouts = [
+    { name: "Burpees", gif: "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" },
+    { name: "Mountain Climbers", gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMHJiODFqcWFza2RvYXZvcWlzdHZwdGZ0ZngwemxhNXFsdzBmeDBxdSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3ov9jSWE1PXj0TVK1y/giphy.gif" },
+    { name: "Jumping Jacks", gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMHJiODFqcWFza2RvYXZvcWlzdHZwdGZ0ZngwemxhNXFsdzBmeDBxdSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/0pzLcdeSHCG75b4zUl/giphy.gif" }
+  ];
+  
+  const [wod, setWod] = useState(workouts[0]);
+  
+  useEffect(() => {
+    const random = Math.floor(Math.random() * workouts.length);
+    setWod(workouts[random]);
+  }, []);
 
-  const handleEditItem = (id, newItem) => {
-    const updatedExerciseItems = exerciseItems.map((item) => {
-      if (item.id === id) {
-        return { ...item, name: newItem };
+  // Fetch matching exercises from DB
+  useEffect(() => {
+    const fetchExercises = async () => {
+      if (!searchTerm) {
+        setSearchResults([]);
+        return;
       }
 
-      return item;
-    });
-    setExerciseItems(updatedExerciseItems);
+      try {
+        const res = await fetch(`/api?search=${encodeURIComponent(searchTerm)}`);
+        const data = await res.json();
+        setSearchResults(data.data);
+      } catch (err) {
+        console.error("Failed to fetch exercises:", err);
+      }
+    };
+
+    fetchExercises();
+  }, [searchTerm]);
+
+  const handleSelectSearchItem = (item) => {
+    if (!exerciseItems.find((ex) => ex.id === item.id)) {
+      const newItem = {
+        ...item,
+        sets: 3,
+        reps: 10
+      };
+      setExerciseItems([...exerciseItems, newItem]);
+    }
+    setSearchTerm("");
+    setSearchResults([]);
+  };
+
+  const handleEditItem = (id, updatedItem) => {
+    const updatedItems = exerciseItems.map((item) =>
+      item.id === id ? updatedItem : item
+    );
+    setExerciseItems(updatedItems);
   };
 
   const handleDeleteItem = (removeId) => {
@@ -81,15 +112,23 @@ const ExerciseComponent = () => {
         </button>
         <div className="search-container">
           <input
-            ref={inputRef}
             type="text"
-            placeholder="Search"
-            value={item}
-            onChange={(event) => setItem(event.target.value)}
+            placeholder="Search exercises..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button onClick={handleAddItem} className="btn-add">
-            Add Exercise
-          </button>
+          {searchResults.length > 0 && (
+            <ul className="search-dropdown">
+              {searchResults.map((item) => (
+                <li key={item.id} onClick={() => handleSelectSearchItem(item)}>
+                  <strong>{item.name}</strong>{" "}
+                  <span style={{ color: "#666", fontSize: "0.9rem" }}>
+                    ({item.primaryMuscles?.replace(/[\[\]"]/g, "")})
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
   
         <ul className="exercise-list">

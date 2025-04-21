@@ -1,6 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
+/*
+  Entry point for react app, renders the app to the DOM and gets backend data from /api
+*/
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
