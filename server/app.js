@@ -83,7 +83,6 @@ app.get('/getLists', (req, res) => {
             res.status(500).json({ message: "Unable to retrieve data at this time." });
             return;
         }
-        console.log(rows);
 
         // Returns a message indicating successful send of data
         res.json({ message: "Data loaded successfully", data: rows });
