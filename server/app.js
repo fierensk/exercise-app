@@ -40,3 +40,29 @@ app.get('/api', (req, res) => {
         res.json({message: 'Hello from NodeJS! Below are all of the database objects:', data: rows});
     });
 });
+
+// Queries database to insert new list
+app.post('/addList', (req, res) => {
+    console.log('Adding list to database');
+    if (req.body["data"].length > 0) {
+        let listIds = '';
+        for (let i = 0; i < req.body["data"].length; i++) {
+            listIds += `["${req.body["data"][`${i}`]["id"]}"],`;
+        }
+
+        db.run(`INSERT INTO lists(exercise_ids) VALUES('${listIds.substring(0, listIds.length-1)}');`, err => {
+            if (err) {
+                console.log(err);
+                res.status(500).json({ message: "Unable to insert list into database "});
+                return;
+            }
+        });
+    }
+
+    res.json({ message: "Data loaded successfully" });
+});
+
+// Retrieves list values
+app.get('/getLists', (req, res) => {
+    console.log('Retrieving stored lists');
+});
