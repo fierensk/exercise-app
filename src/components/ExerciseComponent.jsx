@@ -1,8 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import ExerciseItemComponent from "./ExerciseItemComponent";
 
 const ExerciseComponent = () => {
   const inputRef = useRef();
+  const navigate = useNavigate();
   const [exerciseItems, setExerciseItems] = useState([]); // Selected task list
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]); // Dropdown results
@@ -70,6 +72,20 @@ const ExerciseComponent = () => {
     setExerciseItems([]);
   };
 
+  const handleAddItems = () => {
+    fetch('http://localhost:3000/addList', {
+      method: 'POST',
+      headers: {
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify({ data: exerciseItems })
+    });
+  };
+
+  const handleViewItem = () => {
+    navigate('/exercise-app/lists');
+  };
+
   return (
     <div className="main-container">
       {/* Workout of the Day Section */}
@@ -89,7 +105,9 @@ const ExerciseComponent = () => {
       {/* Main Workout List Section */}
       <section className="workout-list">
         <h1>Workout List</h1>
-  
+        <button onClick={handleViewItem} className="btn-view" style={{marginBottom: '1rem', color: '#ff7043'}}>
+          View Workout Lists
+        </button>
         <div className="search-container">
           <input
             type="text"
@@ -123,9 +141,14 @@ const ExerciseComponent = () => {
         </ul>
   
         {exerciseItems.length > 0 && (
-          <button onClick={handleClearItems} className="btn-clear">
-            Clear List
-          </button>
+          <div>
+            <button onClick={handleAddItems} className="btn-add" style={{marginRight: '1rem'}}>
+              Add List
+            </button>
+            <button onClick={handleClearItems} className="btn-clear">
+              Clear List
+            </button>
+          </div>
         )}
       </section>
     </div>
