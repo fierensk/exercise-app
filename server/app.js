@@ -52,24 +52,38 @@ app.get('/api', (req, res) => {
 
 // Queries database to insert new list
 app.post('/addList', (req, res) => {
-    // Only adds data if list contains at least one object
-    if (req.body["data"].length > 0) {
-        let listIds = ''; // String of array objects containing ids
-        for (let i = 0; i < req.body["data"].length; i++) {
-            // TODO: Find storage for reps and other stuff
-            listIds += `["${req.body["data"][`${i}`]["id"]}"],`;
+    // Finds last used Id to attach workout steps and name to next List Id
+    db.get(`SELECT MAX(id) from lists;`, (err, row) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({message: 'Unable to insert into database.'});
+            return;
         }
+        let listId = row["MAX(id)"] + 1;
 
         // Inserts object into database to create a list item
-        db.run(`INSERT INTO lists(exercise_ids) VALUES('${listIds.substring(0, listIds.length-1)}');`, err => {
+        db.run(`INSERT INTO lists(name) VALUES('List ${listId}');`, err => {
             // Returns an error message and message indicating being unable to update
             if (err) {
                 console.log(err);
-                res.status(500).json({ message: "Unable to insert list into database."});
+                res.status(500).json({ message: "Unable to insert list into database." });
                 return;
             }
         });
-    }
+
+        // Inserts each step into database and attaches to newly created list
+        for (let i = 0; i < req.body["data"].length; i++) {
+            let query = `INSERT INTO workout_step (id, list_num, exercise_id, sets, reps) `;
+            query += `VALUES('${listId}-${req.body["data"][`${i}`]["id"]}', ${listId}, '${req.body["data"][`${i}`]["id"]}', ${req.body["data"][`${i}`]["sets"]}, ${req.body["data"][`${i}`]["reps"]})`;
+            db.run(query, (err, row) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).json({ message: "Unable to insert list into database." });
+                    return;
+                }
+            })
+        }
+    });
 
     // Returns a message indicating database insert was a success
     res.json({ message: "Data loaded successfully" });
@@ -77,14 +91,27 @@ app.post('/addList', (req, res) => {
 
 // Retrieves list values for list view page
 app.get('/getLists', (req, res) => {
-    db.all('SELECT * FROM lists ORDER by id;', (err, rows) => {
+    // Create jsons with Exercise Name, Sets, Reps, Exercise Instructions for each List Name
+    let query = 'SELECT l.name, w.id, w.exercise_id, w.sets, w.reps, s.name as exercise_name, s.instructions '
+                + 'FROM (lists as l INNER JOIN workout_step as w ON l.id = w.list_num) '
+                + 'INNER JOIN schema as s ON w.exercise_id = s.id ORDER BY w.id;'
+    db.all(query, (err, rows) => {
         if (err) {
             console.log(err);
             res.status(500).json({ message: "Unable to retrieve data at this time." });
             return;
         }
 
+        // Iterates through rows to return a JSON file with objects organized by list
+        let data = {};
+        rows.forEach(row => {
+            if (data[`${row["name"]}`] === undefined) {
+                data[`${row["name"]}`] = {};
+            }
+            data[`${row["name"]}`][`${row["exercise_id"]}`] = { listId: row["id"], sets: row["sets"], reps: row["reps"], name: row["exercise_name"], instructions: row["instructions"] };
+        });
+
         // Returns a message indicating successful send of data
-        res.json({ message: "Data loaded successfully", data: rows });
+        res.json({ message: "Data loaded successfully", data: data });
     });
 });
